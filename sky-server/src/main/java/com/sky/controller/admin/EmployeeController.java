@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
@@ -8,6 +9,8 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +27,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/employee")
 @Slf4j
+@Api(tags="员工相关接口")
 public class EmployeeController {
 
     @Autowired
@@ -38,19 +42,25 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
+    @ApiOperation(value="员工登录")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
+        //记录日志
         log.info("员工登录：{}", employeeLoginDTO);
 
+        //调用员工服务进行登录
         Employee employee = employeeService.login(employeeLoginDTO);
 
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
+        //将员工id放入jwt令牌中
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
+        //生成jwt令牌
         String token = JwtUtil.createJWT(
                 jwtProperties.getAdminSecretKey(),
                 jwtProperties.getAdminTtl(),
                 claims);
 
+        //构建员工登录返回对象
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())
                 .userName(employee.getUsername())
@@ -58,6 +68,7 @@ public class EmployeeController {
                 .token(token)
                 .build();
 
+        //返回登录成功结果
         return Result.success(employeeLoginVO);
     }
 
@@ -67,7 +78,25 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
+    @ApiOperation(value="员工注销")
     public Result<String> logout() {
+        return Result.success();
+    }
+    /**
+     * 新增员工
+     * 封装数据传输给 employeeService
+     * @param employeeDTO
+     * @return
+     */
+    // 使用PostMapping注解，表示该方法处理POST请求
+    @PostMapping
+    // 使用ApiOperation注解，表示该方法的功能描述
+    @ApiOperation("新增员工")
+    // 处理POST请求，接收EmployeeDTO类型的参数
+    public Result save(@RequestBody EmployeeDTO employeeDTO){
+        // 调用employeeService的save方法，保存员工信息
+        employeeService.save(employeeDTO);
+        // 返回成功结果
         return Result.success();
     }
 
