@@ -66,7 +66,6 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employeeDTO
      * @return
      */
-    @Override
     public void save(EmployeeDTO employeeDTO) {
         //创建实体
         Employee employee =new Employee();
@@ -83,6 +82,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         //创建当前记录时间，修改时间
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
+
         // TODO 修改动态获取
         //设置当前记录用户ID，修改用户ID
         employee.setCreateUser(10L);
