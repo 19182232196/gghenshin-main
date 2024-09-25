@@ -15,9 +15,6 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
-/**
- * 配置类，注册web层相关组件
- */
 @Configuration
 @Slf4j
 public class WebMvcConfiguration extends WebMvcConfigurationSupport {
@@ -25,11 +22,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     @Autowired
     private JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
 
-    /**
-     * 注册自定义拦截器
-     *
-     * @param registry
-     */
     protected void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
         registry.addInterceptor(jwtTokenAdminInterceptor)
@@ -37,11 +29,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .excludePathPatterns("/admin/employee/login");
     }
 
-    /**
-     * 通过knife4j生成接口文档
-     * 扫描com.sky.controller中的类，实现显示接口文档
-     * @return
-     */
     @Bean
     public Docket docket() {
         log.info("准备生成接口文档");
@@ -59,11 +46,6 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         return docket;
     }
 
-    /**
-     * 设置静态资源映射
-     * 请求访问静态资源映射，避免访问动态的controller类
-     * @param registry
-     */
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
         log.info("开始设置静态资源映射");
         registry.addResourceHandler("/doc.html").addResourceLocations("classpath:/META-INF/resources/");

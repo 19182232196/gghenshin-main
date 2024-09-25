@@ -1,8 +1,10 @@
 package com.gghenshinn.service.impl;
 
+import com.fasterxml.jackson.databind.JsonSerializable;
 import com.gghenshinn.constant.MessageConstant;
 import com.gghenshinn.constant.PasswordConstant;
 import com.gghenshinn.constant.StatusConstant;
+import com.gghenshinn.context.BaseContext;
 import com.gghenshinn.dto.EmployeeDTO;
 import com.gghenshinn.dto.EmployeeLoginDTO;
 import com.gghenshinn.entity.Employee;
@@ -85,10 +87,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
 
-        // TODO 修改动态获取
         //设置当前记录用户ID，修改用户ID
-        employee.setCreateUser(10L);
-        employee.setUpdateUser(10l);
+        employee.setCreateUser(BaseContext.getCurrentId());
+        employee.setUpdateUser(BaseContext.getCurrentId());
 
         employeeMapper.insert(employee);
     }
