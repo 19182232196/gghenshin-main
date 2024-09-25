@@ -67,6 +67,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @return
      */
     public void save(EmployeeDTO employeeDTO) {
+        System.out.println("当前ID：" + Thread.currentThread().getId());
+
         //创建实体
         Employee employee =new Employee();
 

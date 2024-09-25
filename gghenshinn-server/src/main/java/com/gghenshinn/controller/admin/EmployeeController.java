@@ -95,6 +95,7 @@ public class EmployeeController {
     @ApiOperation("新增员工")
     // 处理POST请求，接收EmployeeDTO类型的参数
     public Result save(@RequestBody EmployeeDTO employeeDTO){
+
         log.info("新增员工：{}",employeeDTO);
         // 调用employeeService的save方法，保存员工信息
         employeeService.save(employeeDTO);
